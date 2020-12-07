@@ -1,0 +1,89 @@
+﻿{
+   "ContextClassName": "SoftdentContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": "Context\/Softdent",
+   "OutputPath": "Models\/Softdent",
+   "ProjectRootNamespace": "Softdent2OpenDentalConversion",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Acct]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_ADA]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Appt]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_BlueBook]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Contacts]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Dentist]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Drug]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Empl]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_ExpCodes]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Insurco]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Pat]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Plan]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_RefDr]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_RefRpt]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_RX]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SD_Trans]"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNodaTime": false,
+   "UseSpatial": false,
+   "UseStoredProcedures": false
+}

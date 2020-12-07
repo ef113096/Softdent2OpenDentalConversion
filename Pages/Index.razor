@@ -1,0 +1,162 @@
+﻿@using Syncfusion.Blazor.Buttons
+
+@inherits SharedCode
+
+@page "/"
+
+<div class="container">
+    <div class="alignleft">@DateTime.Now.ToShortDateString()</div>
+    <h3 class="aligncenter">Softdent to Open Dental Data Conversion</h3>
+    <div class="alignright"><SfButton CssClass="e-info" OnClick="@StartConversion">Start</SfButton></div>
+
+    <div style="clear: both;"></div>
+
+    <div class="row" style="margin:auto;text-align:center">@conversionStatusUpdate</div>
+    <div class="row" style="margin:auto;text-align:center">Start Time:  @conversionStartTime</div>
+    <div class="row" style="margin:auto;text-align:center">End Time:    @conversionEndTime</div>
+
+    <hr />
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Operatories</div>
+        <div class="totalColumn">@CounterVariables.totalOperatories.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Dentists</div>
+        <div class="totalColumn">@CounterVariables.totalDentists.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Referring Doctors</div>
+        <div class="totalColumn">@CounterVariables.totalReferringDoctors.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">ADA Codes and Fees</div>
+        <div class="totalColumn" style="font:bold">@CounterVariables.totalADACodes.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Medications</div>
+        <div class="totalColumn" style="font:bold">@CounterVariables.totalDrugs.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Prescription Definitions</div>
+        <div class="totalColumn" style="font:bold">@CounterVariables.totalRXDefinitions.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Employers</div>
+        <div class="totalColumn" style="font:bold">@CounterVariables.totalEmployers.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Insurance Companies</div>
+        <div class="totalColumn">@CounterVariables.totalInsuranceCompanies.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Insurance Plans</div>
+        <div class="totalColumn">@CounterVariables.totalInsurancePlans.ToString("N0")</div>
+    </div>
+
+    <hr />
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Softdent Guarantors That Are Also Patients</div>
+        <div class="totalColumn">@CounterVariables.sdPatients.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Insurance Plans Updated</div>
+        <div class="totalColumn">@CounterVariables.totalPlansUpdated.ToString("N0")</div>
+    </div>
+
+    <hr />
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Accounts</div>
+        <div class="totalColumn">@CounterVariables.totalAccounts.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">2nd Guarantors</div>
+        <div class="totalColumn">@CounterVariables.total2ndGuarantors.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Account Transactions</div>
+        <div class="totalColumn">@CounterVariables.totalAccountBillingTransactions.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Insurance Subscribers</div>
+        <div class="totalColumn">@CounterVariables.totalInsuranceSubscribers.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Insurance 2nd Guarantor Subscribers</div>
+        <div class="totalColumn">@CounterVariables.total2ndGuarantorInsuranceSubscribers.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Patients</div>
+        <div class="totalColumn">@CounterVariables.totalPatients.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Patient Appointments</div>
+        <div class="totalColumn">@CounterVariables.totalAppointments.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Patient Prescriptions</div>
+        <div class="totalColumn">@CounterVariables.totalPrescriptions.ToString("N0")</div>
+    </div>
+
+    <div class="row" style="column-count: 2">
+        <div class="col">Patient Transactions</div>
+        <div class="totalColumn">@CounterVariables.totalBillingTransactions.ToString("N0")</div>
+    </div>
+
+</div>
+
+<style>
+
+    .totalColumn {
+        font:bold;
+        text-align:right;
+        padding-right:20px;
+    }
+
+    .footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .alignleft {
+        float: left;
+        width: 25%;
+        text-align: left;
+    }
+
+    .alignright {
+        float: left;
+        width: 25%;
+        text-align: right;
+    }
+
+    .aligncenter {
+        float: left;
+        width: 50%;
+        text-align: center;
+    }
+</style>
+
+
+
