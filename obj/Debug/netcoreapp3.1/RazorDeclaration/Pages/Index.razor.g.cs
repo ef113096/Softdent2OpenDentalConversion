@@ -97,6 +97,19 @@ using Syncfusion.Blazor.Buttons;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 172 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\Index.razor"
+ 
+    private async Task AddExplosionCodes()
+    {
+        string url = "/ExpCodes";
+        await jsRuntime.InvokeAsync<object>("open", url, "_blank");
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
     }
 }
 #pragma warning restore 1591

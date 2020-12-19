@@ -101,4 +101,6 @@ C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConv
 C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\obj\Debug\netcoreapp3.1\Softdent2OpenDentalConversion.dll
 C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\obj\Debug\netcoreapp3.1\Softdent2OpenDentalConversion.pdb
 C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\obj\Debug\netcoreapp3.1\Softdent2OpenDentalConversion.genruntimeconfig.cache
+C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ExpCodes.razor.g.cs
+C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\obj\Debug\netcoreapp3.1\Razor\Pages\ExpCodes.razor.g.cs
 C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\obj\Debug\netcoreapp3.1\Softdent2OpenDentalConversion.csprojAssemblyReference.cache

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Dezq8jF5dhqQyuZcsKKUEvh7i+BdEUAocgKrLmDMzFPtAfCyH6K57fU9NqsK0FnSEIyP1WuTmbEnUkuOmU8dkw==",
+  "dgSpecHash": "k+tFcz96A4HTOkFrEiz7wbdV0DyPti65sFq+Q4yXQpaYoBgS/+g0J18zpNixkzx6R5p3Sz5CcGy1ImJoxfeFnA==",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\source\\repos\\Softdent2OpenDentalConversion\\Softdent2OpenDentalConversion\\Softdent2OpenDentalConversion.csproj",
   "expectedPackageFiles": [
@@ -119,7 +119,9 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.10\\microsoft.netcore.app.host.win-x64.3.1.10.nupkg.sha512"
   ],
   "logs": []
 }

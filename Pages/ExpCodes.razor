@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Spinner 
+@using Syncfusion.Blazor.Inputs
+
+@using Softdent2OpenDentalConversion.Context.Softdent
+@using Softdent2OpenDentalConversion.Models.Softdent  
+
+@inherits SharedCode
+@page "/ExpCodes"
+
+
+<div class="col-lg-12 control-section">
+
+    <div class="row" style="display:flex">
+        <div class="col" style="flex:30%">
+            <div class="row"><strong>Explosion Code:</strong></div>
+            <div class="row">
+                <SfNumericTextBox TValue="double?" Value="@explosionCode" Decimals="2" Step="0.01"></SfNumericTextBox>
+            </div>
+            <div class="row"><strong>ADA Code</strong></div>
+            <div class="row">
+                <SfNumericTextBox TValue="double?" Value="@adaCode" Decimals="2" Step="0.01"></SfNumericTextBox>
+            </div>
+        </div>
+        <div class="col" style="flex:70%">
+            <SfGrid DataSource="@GridData" AllowSelection="true" EnableVirtualization="true" Height="300" RowHeight="38">
+                <GridColumns>
+                    <GridColumn Field=@nameof(ExplosionCodes.ID) HeaderText="ID"></GridColumn>
+                    <GridColumn Field=@nameof(ExplosionCodes.ExplosionCode) HeaderText="Explosion Code"></GridColumn>
+                    <GridColumn Field=@nameof(ExplosionCodes.ADACode) HeaderText="ADA Code"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+    <hr/>
+</div>
+
+@code {
+
+    private double explosionCode = 0.00;
+    private double adaCode = 0.00;
+
+    public List<Softdent2OpenDentalConversion.Models.Softdent.ExplosionCodes> GridData { get; set; }
+
+    SoftdentContext dbSoftdentContext = new SoftdentContext();
+
+    protected override void OnInitialized()
+    {
+        //ExplosionCodes explosionCodes = new ExplosionCodes();
+        //explosionCodes.ExplosionCode = (decimal)100000.00;
+        //explosionCodes.ADACode = 4910;
+        //dbSoftdentContext.Add(explosionCodes);
+        //dbSoftdentContext.SaveChanges();
+        GridData = dbSoftdentContext.ExplosionCodes.ToList();
+    }
+
+}

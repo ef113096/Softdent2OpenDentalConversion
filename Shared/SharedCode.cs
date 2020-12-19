@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FileHelpers;
 
 using Softdent2OpenDentalConversion.Context.OpenDental;
+using Softdent2OpenDentalConversion.Context.Softdent;
 using Softdent2OpenDentalConversion.Models.OpenDental;
 
 using Softdent2OpenDentalConversion.Models.Softdent;
@@ -29,6 +30,7 @@ namespace Softdent2OpenDentalConversion.Shared
 
         // Entity Framework declaration for the Open Dental models.
         OpenDentalContext dbOpenDentalContext = new OpenDentalContext();
+        SoftdentContext dbSoftdentContext = new SoftdentContext();
 
         #endregion (dbContext Declarations)
 

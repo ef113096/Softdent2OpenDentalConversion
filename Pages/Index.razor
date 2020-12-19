@@ -1,15 +1,25 @@
 ﻿@using Syncfusion.Blazor.Buttons
 
 @inherits SharedCode
+@inject IJSRuntime jsRuntime
 
 @page "/"
 
 <div class="container">
-    <div class="alignleft">@DateTime.Now.ToShortDateString()</div>
-    <h3 class="aligncenter">Softdent to Open Dental Data Conversion</h3>
-    <div class="alignright"><SfButton CssClass="e-info" OnClick="@StartConversion">Start</SfButton></div>
+    <div class="row" style="display:flex">
+        <div class="col" style="flex:33.33%;text-align:left;font-weight:bold">
+            @DateTime.Now.ToShortDateString()
+        </div>
 
-    <div style="clear: both;"></div>
+        <div class="col" style="flex:33.33%;text-align:center">
+            <h3>Softdent to Open Dental Data Conversion</h3>
+        </div>
+
+        <div class="col" style="flex:33.33%;text-align:right">
+            <div style="display:inline-flex"><SfButton CssClass="e-info" OnClick="@AddExplosionCodes">Explosion Codes</SfButton></div>
+            <div style="display:inline-flex"><SfButton CssClass="e-info" OnClick="@StartConversion">Start</SfButton></div>
+        </div>
+    </div>
 
     <div class="row" style="margin:auto;text-align:center">@conversionStatusUpdate</div>
     <div class="row" style="margin:auto;text-align:center">Start Time:  @conversionStartTime</div>
@@ -126,9 +136,9 @@
 <style>
 
     .totalColumn {
-        font:bold;
-        text-align:right;
-        padding-right:20px;
+        font: bold;
+        text-align: right;
+        padding-right: 20px;
     }
 
     .footer {
@@ -158,5 +168,12 @@
     }
 </style>
 
-
+@code
+{
+    private async Task AddExplosionCodes()
+    {
+        string url = "/ExpCodes";
+        await jsRuntime.InvokeAsync<object>("open", url, "_blank");
+    }
+}
 
