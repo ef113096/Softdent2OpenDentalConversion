@@ -40,15 +40,10 @@
             <div class="row" style="padding-top:15px">
                 <SfButton CssClass="e-info" OnClick="@DeleteHighlightedGridRecord">Delete Highlighted Grid Record</SfButton>
             </div>
-
-            @*<div class="row" style="padding-top:15px">
-            <SfButton CssClass="e-info" OnClick="@Test">Test</SfButton>
-        </div>*@
-
         </div>
         <div class="col" style="flex:70%">
             <SfGrid Toolbar=@Tool @ref="Grid" DataSource="@GridData" AllowSelection="true" EnableVirtualization="false" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})" Height="300" RowHeight="38">
-                <GridEvents RowSelected="RowSelectHandler" TValue="ExplosionCodes"></GridEvents>
+                <GridEvents RowSelected="RowSelectHandler" TValue="ExplosionCodes" ContextMenuItemClicked="OnContextMenuClick"></GridEvents>
                 <GridColumns>
                     <GridColumn Field=@nameof(ExplosionCodes.ID) HeaderText="ID"></GridColumn>
                     <GridColumn Field=@nameof(ExplosionCodes.ExplosionCode) HeaderText="Explosion Code"></GridColumn>
@@ -70,27 +65,30 @@
 
 @code {
 
-    private bool DialogBoxVisible { get; set; } = false;
-
-    SfGrid<ExplosionCodes> Grid { get; set; }
-
+    // Create instances of the two numeric textboxes in order to better
+    // be able to SET FOCUS.
     SfNumericTextBox<double?> numericTextBoxEplosionCode { get; set; }
     SfNumericTextBox<double?> numericTextBoxADACode { get; set; }
 
+    // Blazor display variables for each numeric textbox.
     private double? explosionCode { get; set; } = 0;
     private double? adaCode { get; set; } = 0;
 
+    // Variables for the page's DialogBox.
+    private bool DialogBoxVisible { get; set; } = false;
     private string dialogBoxText { get; set; } = "";
     private string dialogBoxHeader { get; set; } = "System Message";
 
+    // Explosion Code Grid and List instances.
+    SfGrid<ExplosionCodes> Grid { get; set; }
     public List<Softdent2OpenDentalConversion.Models.Softdent.ExplosionCodes> GridData { get; set; }
 
+    // DBContext for the Softdent database.
     SoftdentContext dbSoftdentContext = new SoftdentContext();
 
+    // The selected row number and the table value of the column ID
     int rowIndex { get; set; } = 0;
     int recordID { get; set; } = 0;
-
-    string rowIndexText = "0";
 
     protected override void OnInitialized()
     {
@@ -217,6 +215,16 @@
         ScrollGrid(rowIndex);
 
         StateHasChanged();
+    }
+
+    private void OnContextMenuClick(ContextMenuClickEventArgs<ExplosionCodes> args)
+    {
+        switch (args.Item.Text)
+        {
+            case "Delete Record":
+                DeleteHighlightedGridRecord();
+                break;
+        }
     }
 }
 

@@ -140,30 +140,33 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 71 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+#line 66 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
        
 
-    private bool DialogBoxVisible { get; set; } = false;
-
-    SfGrid<ExplosionCodes> Grid { get; set; }
-
+    // Create instances of the two numeric textboxes in order to better
+    // be able to SET FOCUS.
     SfNumericTextBox<double?> numericTextBoxEplosionCode { get; set; }
     SfNumericTextBox<double?> numericTextBoxADACode { get; set; }
 
+    // Blazor display variables for each numeric textbox.
     private double? explosionCode { get; set; } = 0;
     private double? adaCode { get; set; } = 0;
 
+    // Variables for the page's DialogBox.
+    private bool DialogBoxVisible { get; set; } = false;
     private string dialogBoxText { get; set; } = "";
     private string dialogBoxHeader { get; set; } = "System Message";
 
+    // Explosion Code Grid and List instances.
+    SfGrid<ExplosionCodes> Grid { get; set; }
     public List<Softdent2OpenDentalConversion.Models.Softdent.ExplosionCodes> GridData { get; set; }
 
+    // DBContext for the Softdent database.
     SoftdentContext dbSoftdentContext = new SoftdentContext();
 
+    // The selected row number and the table value of the column ID
     int rowIndex { get; set; } = 0;
     int recordID { get; set; } = 0;
-
-    string rowIndexText = "0";
 
     protected override void OnInitialized()
     {
@@ -290,6 +293,16 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         ScrollGrid(rowIndex);
 
         StateHasChanged();
+    }
+
+    private void OnContextMenuClick(ContextMenuClickEventArgs<ExplosionCodes> args)
+    {
+        switch (args.Item.Text)
+        {
+            case "Delete Record":
+                DeleteHighlightedGridRecord();
+                break;
+        }
     }
 
 #line default
