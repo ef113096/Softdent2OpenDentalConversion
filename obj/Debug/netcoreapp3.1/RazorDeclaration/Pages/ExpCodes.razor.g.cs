@@ -111,14 +111,21 @@ using Syncfusion.Blazor.Inputs;
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
-using Softdent2OpenDentalConversion.Context.Softdent;
+#line 5 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+using Syncfusion.Blazor.Popups;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 7 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+using Softdent2OpenDentalConversion.Context.Softdent;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
 using Softdent2OpenDentalConversion.Models.Softdent;
 
 #line default
@@ -133,30 +140,141 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 39 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+#line 67 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
        
 
-    private double explosionCode = 0.00;
-    private double adaCode = 0.00;
+    private bool DialogBoxVisible { get; set; } = false;
+
+    SfGrid<ExplosionCodes> Grid { get; set; }
+
+    private double? explosionCode { get; set; } = 0;
+    private double? adaCode { get; set; } = 0;
+
+    private string dialogBoxText { get; set; } = "";
+    private string dialogBoxHeader { get; set; } = "System Message";
 
     public List<Softdent2OpenDentalConversion.Models.Softdent.ExplosionCodes> GridData { get; set; }
 
     SoftdentContext dbSoftdentContext = new SoftdentContext();
 
+    int rowIndex { get; set; } = 0;
+    int recordID { get; set; } = 0;
+
+    string rowIndexText = "0";
+
     protected override void OnInitialized()
     {
-        //ExplosionCodes explosionCodes = new ExplosionCodes();
-        //explosionCodes.ExplosionCode = (decimal)100000.00;
-        //explosionCodes.ADACode = 4910;
-        //dbSoftdentContext.Add(explosionCodes);
-        //dbSoftdentContext.SaveChanges();
-        GridData = dbSoftdentContext.ExplosionCodes.ToList();
+        GridData = dbSoftdentContext.ExplosionCodes.OrderBy(e => e.ExplosionCode).ThenBy(e => e.ADACode).ToList();
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        SetFocus("textboxExplosionCode");
+    }
+
+    async Task SetFocus(string elementID)
+    {
+        await jsRuntime.InvokeAsync<object>("focusInput", "textBoxExplosionCode");
+    }
+
+    async Task ScrollGrid(int rowIndex)
+    {
+        await jsRuntime.InvokeAsync<object>("scroll", rowIndex);
+        await jsRuntime.InvokeVoidAsync("focusInput", "textBoxExplosionCode");
+        // The value of x above is the Grid RowIndex to be selected.
+        await Grid.SelectRow(rowIndex);
+    }
+
+    private void AddCode()
+    {
+        bool _continue = true;
+
+        if (explosionCode == 0)
+        {
+            // Do not continue if the Explosion Code value is zero.
+            _continue = false;
+            SetFocus("textBoxExplosionCode");
+            ShowModalDialogBox("Explosion Code cannot be zero!");
+        }
+
+        if (_continue && adaCode == 0)
+        {
+            // Do not continue if the ADA Code value is zero.
+            _continue = false;
+            SetFocus("textBoxADACode");
+            ShowModalDialogBox("ADA code cannot be zero!");
+        }
+
+        if (_continue)
+        {
+            // Check to see if the Explosion Code / ADA Code combination
+            // already exists before adding.
+            bool codesExist = dbSoftdentContext.ExplosionCodes.Where(e => e.ExplosionCode == (decimal)explosionCode)
+                .Where(e => e.ADACode == (decimal)adaCode).ToList().Count() > 0;
+
+            if (!codesExist)
+            {
+                // Add the new code combination.
+                ExplosionCodes explosionCodes = new ExplosionCodes();
+                explosionCodes.ExplosionCode = (decimal)explosionCode;
+                explosionCodes.ADACode = (decimal)adaCode;
+                dbSoftdentContext.Add(explosionCodes);
+                dbSoftdentContext.SaveChanges();
+
+                // Reload the table data to the grid.
+                GridData = dbSoftdentContext.ExplosionCodes.OrderBy(e => e.ExplosionCode).ThenBy(e => e.ADACode).ToList();
+
+                // Loop through the list until the newly added codes are located.
+                int x = 0;
+                foreach (var record in GridData)
+                {
+                    if (record.ExplosionCode == (decimal)explosionCode && record.ADACode == (decimal)adaCode) break;
+                    x += 1;
+                }
+
+                // A Javascript routine to scroll to the selected grid row.
+                ScrollGrid(x);
+
+                StateHasChanged();
+            }
+            else
+            {
+                // Notify the user that the code combination already exists.
+                string errorMessage = "The code combination of " + explosionCode.ToString() + " and " +
+                    adaCode.ToString() + " already exists!";
+
+                SetFocus("textboxExplosionCode");
+                ShowModalDialogBox(errorMessage);
+            }
+        }
+
+    }
+
+    public void RowSelectHandler(RowSelectEventArgs<ExplosionCodes> args)
+    {
+        // Get the selected row of the grid along with the value of the table's
+        // ID column after each mouse click.
+        rowIndex = (int)args.RowIndex;
+        recordID = args.Data.ID;
+    }
+
+    private void OnDialogBoxOverlayClick(MouseEventArgs args)
+    {
+        // Close the dialog box when the user clicks on it's close box.
+        DialogBoxVisible = false;
+    }
+
+    private void ShowModalDialogBox(string message)
+    {
+        // Set the dialog box text and show.
+        dialogBoxText = message;
+        DialogBoxVisible = true;
+    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime jsRuntime { get; set; }
     }
 }
 #pragma warning restore 1591
