@@ -140,12 +140,15 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 67 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+#line 71 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
        
 
     private bool DialogBoxVisible { get; set; } = false;
 
     SfGrid<ExplosionCodes> Grid { get; set; }
+
+    SfNumericTextBox<double?> numericTextBoxEplosionCode { get; set; }
+    SfNumericTextBox<double?> numericTextBoxADACode { get; set; }
 
     private double? explosionCode { get; set; } = 0;
     private double? adaCode { get; set; } = 0;
@@ -169,18 +172,20 @@ using Softdent2OpenDentalConversion.Models.Softdent;
 
     protected override void OnAfterRender(bool firstRender)
     {
-        SetFocus("textboxExplosionCode");
-    }
+        numericTextBoxEplosionCode.FocusIn();
 
-    async Task SetFocus(string elementID)
-    {
-        await jsRuntime.InvokeAsync<object>("focusInput", "textBoxExplosionCode");
+        if (firstRender)
+        {
+            // If the grid has records then highlight row 0.
+            if (Grid.TotalItemCount > 0) Grid.SelectRow(0);
+        }
     }
 
     async Task ScrollGrid(int rowIndex)
     {
         await jsRuntime.InvokeAsync<object>("scroll", rowIndex);
-        await jsRuntime.InvokeVoidAsync("focusInput", "textBoxExplosionCode");
+        await numericTextBoxEplosionCode.FocusIn();
+
         // The value of x above is the Grid RowIndex to be selected.
         await Grid.SelectRow(rowIndex);
     }
@@ -193,16 +198,16 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         {
             // Do not continue if the Explosion Code value is zero.
             _continue = false;
-            SetFocus("textBoxExplosionCode");
             ShowModalDialogBox("Explosion Code cannot be zero!");
+            numericTextBoxEplosionCode.FocusIn();
         }
 
         if (_continue && adaCode == 0)
         {
             // Do not continue if the ADA Code value is zero.
             _continue = false;
-            SetFocus("textBoxADACode");
             ShowModalDialogBox("ADA code cannot be zero!");
+            numericTextBoxADACode.FocusIn();
         }
 
         if (_continue)
@@ -243,8 +248,8 @@ using Softdent2OpenDentalConversion.Models.Softdent;
                 string errorMessage = "The code combination of " + explosionCode.ToString() + " and " +
                     adaCode.ToString() + " already exists!";
 
-                SetFocus("textboxExplosionCode");
                 ShowModalDialogBox(errorMessage);
+                numericTextBoxEplosionCode.FocusIn();
             }
         }
 
@@ -269,6 +274,22 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         // Set the dialog box text and show.
         dialogBoxText = message;
         DialogBoxVisible = true;
+    }
+
+    private void DeleteHighlightedGridRecord()
+    {
+        var expCode = dbSoftdentContext.ExplosionCodes.SingleOrDefault(e => e.ID == recordID);
+        dbSoftdentContext.ExplosionCodes.Remove(expCode);
+        dbSoftdentContext.SaveChanges();
+
+        // Reload the table data to the grid.
+        GridData = dbSoftdentContext.ExplosionCodes.OrderBy(e => e.ExplosionCode).ThenBy(e => e.ADACode).ToList();
+
+        if (rowIndex > 0) rowIndex -= 1;
+
+        ScrollGrid(rowIndex);
+
+        StateHasChanged();
     }
 
 #line default

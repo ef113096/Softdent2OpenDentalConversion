@@ -26,20 +26,24 @@
         <div class="col" style="flex:30%">
             <div class="row" style="font-weight:bold">Explosion Code:</div>
             <div class="row">
-                <SfNumericTextBox ID="textBoxExplosionCode" Format="0.00" TValue="double?" @bind-Value="@explosionCode" Decimals="2" Step="0.01"></SfNumericTextBox>
+                <SfNumericTextBox @ref="numericTextBoxEplosionCode" ID="textBoxExplosionCode" Format="0.00" TValue="double?" @bind-Value="@explosionCode" Decimals="2" Step="0.01"></SfNumericTextBox>
             </div>
             <div class="row" style="font-weight:bold">ADA Code</div>
             <div class="row">
-                <SfNumericTextBox ID="textBoxADACode" Format="0.00" TValue="double?" @bind-Value="@adaCode" Decimals="2" Step="0.01"></SfNumericTextBox>
+                <SfNumericTextBox @ref="numericTextBoxADACode" ID="textBoxADACode" Format="0.00" TValue="double?" @bind-Value="@adaCode" Decimals="2" Step="0.01"></SfNumericTextBox>
             </div>
 
             <div class="row" style="padding-top:15px">
                 <SfButton CssClass="e-info" OnClick="@AddCode">Add Code</SfButton>
             </div>
 
+            <div class="row" style="padding-top:15px">
+                <SfButton CssClass="e-info" OnClick="@DeleteHighlightedGridRecord">Delete Highlighted Grid Record</SfButton>
+            </div>
+
             @*<div class="row" style="padding-top:15px">
-                <SfButton CssClass="e-info" OnClick="@Test">Test</SfButton>
-            </div>*@
+            <SfButton CssClass="e-info" OnClick="@Test">Test</SfButton>
+        </div>*@
 
         </div>
         <div class="col" style="flex:70%">
@@ -70,6 +74,9 @@
 
     SfGrid<ExplosionCodes> Grid { get; set; }
 
+    SfNumericTextBox<double?> numericTextBoxEplosionCode { get; set; }
+    SfNumericTextBox<double?> numericTextBoxADACode { get; set; }
+
     private double? explosionCode { get; set; } = 0;
     private double? adaCode { get; set; } = 0;
 
@@ -92,18 +99,20 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        SetFocus("textboxExplosionCode");
-    }
+        numericTextBoxEplosionCode.FocusIn();
 
-    async Task SetFocus(string elementID)
-    {
-        await jsRuntime.InvokeAsync<object>("focusInput", "textBoxExplosionCode");
+        if (firstRender)
+        {
+            // If the grid has records then highlight row 0.
+            if (Grid.TotalItemCount > 0) Grid.SelectRow(0);
+        }
     }
 
     async Task ScrollGrid(int rowIndex)
     {
         await jsRuntime.InvokeAsync<object>("scroll", rowIndex);
-        await jsRuntime.InvokeVoidAsync("focusInput", "textBoxExplosionCode");
+        await numericTextBoxEplosionCode.FocusIn();
+
         // The value of x above is the Grid RowIndex to be selected.
         await Grid.SelectRow(rowIndex);
     }
@@ -116,16 +125,16 @@
         {
             // Do not continue if the Explosion Code value is zero.
             _continue = false;
-            SetFocus("textBoxExplosionCode");
             ShowModalDialogBox("Explosion Code cannot be zero!");
+            numericTextBoxEplosionCode.FocusIn();
         }
 
         if (_continue && adaCode == 0)
         {
             // Do not continue if the ADA Code value is zero.
             _continue = false;
-            SetFocus("textBoxADACode");
             ShowModalDialogBox("ADA code cannot be zero!");
+            numericTextBoxADACode.FocusIn();
         }
 
         if (_continue)
@@ -166,8 +175,8 @@
                 string errorMessage = "The code combination of " + explosionCode.ToString() + " and " +
                     adaCode.ToString() + " already exists!";
 
-                SetFocus("textboxExplosionCode");
                 ShowModalDialogBox(errorMessage);
+                numericTextBoxEplosionCode.FocusIn();
             }
         }
 
@@ -192,6 +201,22 @@
         // Set the dialog box text and show.
         dialogBoxText = message;
         DialogBoxVisible = true;
+    }
+
+    private void DeleteHighlightedGridRecord()
+    {
+        var expCode = dbSoftdentContext.ExplosionCodes.SingleOrDefault(e => e.ID == recordID);
+        dbSoftdentContext.ExplosionCodes.Remove(expCode);
+        dbSoftdentContext.SaveChanges();
+
+        // Reload the table data to the grid.
+        GridData = dbSoftdentContext.ExplosionCodes.OrderBy(e => e.ExplosionCode).ThenBy(e => e.ADACode).ToList();
+
+        if (rowIndex > 0) rowIndex -= 1;
+
+        ScrollGrid(rowIndex);
+
+        StateHasChanged();
     }
 }
 
