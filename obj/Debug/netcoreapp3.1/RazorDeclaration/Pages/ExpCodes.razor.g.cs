@@ -206,6 +206,14 @@ using Softdent2OpenDentalConversion.Models.Softdent;
             numericTextBoxEplosionCode.FocusIn();
         }
 
+        if (_continue && explosionCode < 1000000)
+        {
+            // Softdent Explosion Codes start at 1 million.
+            _continue = false;
+            ShowModalDialogBox("Explosion Codes must be greater than or equal to 1000000.");
+            numericTextBoxEplosionCode.FocusIn();
+        }
+
         if (_continue && adaCode == 0)
         {
             // Do not continue if the ADA Code value is zero.
@@ -315,20 +323,31 @@ using Softdent2OpenDentalConversion.Models.Softdent;
     {
         if (args.RequestType.ToString() == "Save")
         {
-            //Cancel the default editing action in Grid 
-            args.Cancel = true;     
+            if (args.Action == "Edit")
+            {
+                //Cancel the default editing action in Grid 
+                args.Cancel = true;
 
-            // Get the current record in the SQL table and apply updates.
-            var result = dbSoftdentContext.ExplosionCodes.SingleOrDefault(e => e.ID == recordID);
-            result.ExplosionCode = args.Data.ExplosionCode;
-            result.ADACode = args.Data.ADACode;
-            dbSoftdentContext.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            dbSoftdentContext.SaveChanges();
+                // Get the current record in the SQL table and apply updates.
+                var result = dbSoftdentContext.ExplosionCodes.SingleOrDefault(e => e.ID == recordID);
+                result.ExplosionCode = args.Data.ExplosionCode;
+                result.ADACode = args.Data.ADACode;
+                dbSoftdentContext.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                dbSoftdentContext.SaveChanges();
 
-            // Update the grid columns to reflext changes made in 
-            // the dialog form.
-            args.RowData.ExplosionCode = args.Data.ExplosionCode;
-            args.RowData.ADACode = args.Data.ADACode;
+                // Update the grid columns to reflext changes made in 
+                // the dialog form.
+                args.RowData.ExplosionCode = args.Data.ExplosionCode;
+                args.RowData.ADACode = args.Data.ADACode;
+            }
+            else if (args.Action == "Add")
+            {
+                //Cancel the default add record action in Grid 
+                args.Cancel = true;
+
+                ShowModalDialogBox("Add Explosion Code logic goes here.");
+            }
+
 
             // Close and refresh the grid to display changes.
             Grid.CloseEdit();
