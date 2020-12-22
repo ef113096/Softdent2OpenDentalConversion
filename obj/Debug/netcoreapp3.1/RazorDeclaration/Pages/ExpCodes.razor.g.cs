@@ -140,7 +140,7 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 74 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+#line 75 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
        
 
     // Create instances of the two numeric textboxes in order to better
