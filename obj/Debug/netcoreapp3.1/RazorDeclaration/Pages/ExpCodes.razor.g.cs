@@ -224,6 +224,18 @@ using Softdent2OpenDentalConversion.Models.Softdent;
 
         if (_continue)
         {
+            // Check to make sure the ADA Code is valid.
+            bool validADACode = dbSoftdentContext.ADACodes.Where(e => e.CodeNumeric == Math.Floor((decimal)adaCode)).ToList().Count() > 0;
+            if (!validADACode)
+            {
+                _continue = false;
+                ShowModalDialogBox("Invalid ADA Code ...please re-enter.");
+                numericTextBoxADACode.FocusIn();
+            }
+        }
+
+        if (_continue)
+        {
             // Check to see if the Explosion Code / ADA Code combination
             // already exists before adding.
             bool codesExist = dbSoftdentContext.ExplosionCodes.Where(e => e.ExplosionCode == (decimal)explosionCode)
@@ -347,7 +359,6 @@ using Softdent2OpenDentalConversion.Models.Softdent;
 
                 ShowModalDialogBox("Add Explosion Code logic goes here.");
             }
-
 
             // Close and refresh the grid to display changes.
             Grid.CloseEdit();

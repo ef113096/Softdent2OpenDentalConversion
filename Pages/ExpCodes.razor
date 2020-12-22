@@ -57,7 +57,7 @@
     <hr />
 </div>
 
-<SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@DialogBoxVisible">
+<SfDialog Width="350px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@DialogBoxVisible">
     <DialogEvents OnOverlayClick="@OnDialogBoxOverlayClick"></DialogEvents>
     <DialogTemplates>
         <Header>@dialogBoxHeader</Header>
@@ -151,6 +151,18 @@
             _continue = false;
             ShowModalDialogBox("ADA code cannot be zero!");
             numericTextBoxADACode.FocusIn();
+        }
+
+        if (_continue)
+        {
+            // Check to make sure the ADA Code is valid.
+            bool validADACode = dbSoftdentContext.ADACodes.Where(e => e.CodeNumeric == Math.Floor((decimal)adaCode)).ToList().Count() > 0;
+            if (!validADACode)
+            {
+                _continue = false;
+                ShowModalDialogBox("Invalid ADA Code ...please re-enter.");
+                numericTextBoxADACode.FocusIn();
+            }
         }
 
         if (_continue)
@@ -278,7 +290,6 @@
 
                 ShowModalDialogBox("Add Explosion Code logic goes here.");
             }
-
 
             // Close and refresh the grid to display changes.
             Grid.CloseEdit();

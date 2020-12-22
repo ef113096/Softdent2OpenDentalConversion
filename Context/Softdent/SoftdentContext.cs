@@ -18,6 +18,8 @@ namespace Softdent2OpenDentalConversion.Context.Softdent
         {
         }
 
+        public virtual DbSet<ADACodes> ADACodes { get; set; }
+
         public virtual DbSet<ExplosionCodes> ExplosionCodes { get; set; }
         public virtual DbSet<SdAcct> SdAccts { get; set; }
         public virtual DbSet<SdAdum> SdAda { get; set; }
@@ -46,21 +48,45 @@ namespace Softdent2OpenDentalConversion.Context.Softdent
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ExplosionCodes>(entity =>
+            modelBuilder.Entity<ADACodes>(entity =>
             {
                 entity.HasKey(e => e.ID);
 
-                entity.ToTable("ExplosionCodes");
+                entity.ToTable("ADACodes");
 
                 entity.Property(e => e.ID)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("ID");
-                    
 
+                entity.Property(e => e.Code)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Code");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("Description");
+
+                entity.Property(e => e.CodeNumeric)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("CodeNumeric");
+            });
+
+            modelBuilder.Entity<ExplosionCodes>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+ 
+                entity.ToTable("ExplosionCodes");
+                
+                entity.Property(e => e.ID)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ID");
+                
                 entity.Property(e => e.ExplosionCode)
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("ExplosionCode");
-
+                
                 entity.Property(e => e.ADACode)
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("ADACode");
