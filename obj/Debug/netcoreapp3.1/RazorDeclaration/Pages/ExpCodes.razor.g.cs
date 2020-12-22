@@ -140,7 +140,7 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 66 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
+#line 74 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\ExpCodes.razor"
        
 
     // Create instances of the two numeric textboxes in order to better
@@ -195,6 +195,7 @@ using Softdent2OpenDentalConversion.Models.Softdent;
 
     private void AddCode()
     {
+        // Set a flag to decide to continue or break as this method progresses.
         bool _continue = true;
 
         if (explosionCode == 0)
@@ -255,7 +256,6 @@ using Softdent2OpenDentalConversion.Models.Softdent;
                 numericTextBoxEplosionCode.FocusIn();
             }
         }
-
     }
 
     public void RowSelectHandler(RowSelectEventArgs<ExplosionCodes> args)
@@ -281,6 +281,7 @@ using Softdent2OpenDentalConversion.Models.Softdent;
 
     private void DeleteHighlightedGridRecord()
     {
+        // Find the current grid record in the SQL table and update.
         var expCode = dbSoftdentContext.ExplosionCodes.SingleOrDefault(e => e.ID == recordID);
         dbSoftdentContext.ExplosionCodes.Remove(expCode);
         dbSoftdentContext.SaveChanges();
@@ -288,10 +289,14 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         // Reload the table data to the grid.
         GridData = dbSoftdentContext.ExplosionCodes.OrderBy(e => e.ExplosionCode).ThenBy(e => e.ADACode).ToList();
 
+        // Now that the record is deleted, set the selected row to rowIndex - 1 
+        // unless there are no records, or the row is already at the top of the grid.
         if (rowIndex > 0) rowIndex -= 1;
 
+        // Move to the currently selected row.
         ScrollGrid(rowIndex);
 
+        // Update all visual components on the page.
         StateHasChanged();
     }
 
@@ -299,11 +304,45 @@ using Softdent2OpenDentalConversion.Models.Softdent;
     {
         switch (args.Item.Text)
         {
+            // Custom methods to process when a context menu option is selected.
             case "Delete Record":
                 DeleteHighlightedGridRecord();
                 break;
         }
     }
+
+    public void ActionBeginHandler(ActionEventArgs<ExplosionCodes> args)
+    {
+        if (args.RequestType.ToString() == "Save")
+        {
+            //Cancel the default editing action in Grid 
+            args.Cancel = true;     
+
+            // Get the current record in the SQL table and apply updates.
+            var result = dbSoftdentContext.ExplosionCodes.SingleOrDefault(e => e.ID == recordID);
+            result.ExplosionCode = args.Data.ExplosionCode;
+            result.ADACode = args.Data.ADACode;
+            dbSoftdentContext.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            dbSoftdentContext.SaveChanges();
+
+            // Update the grid columns to reflext changes made in 
+            // the dialog form.
+            args.RowData.ExplosionCode = args.Data.ExplosionCode;
+            args.RowData.ADACode = args.Data.ADACode;
+
+            // Close and refresh the grid to display changes.
+            Grid.CloseEdit();
+            Grid.Refresh();
+        }
+    }
+
+    public void ActionCompleteHandler(ActionEventArgs<ExplosionCodes> args)
+    {
+        // Once the grid dialog edit form is closed, select and highlight
+        // the current row.
+        Grid.SelectRow(rowIndex);
+    }
+
 
 #line default
 #line hidden
