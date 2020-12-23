@@ -48,13 +48,6 @@ using Microsoft.AspNetCore.Components.Routing;
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\_Imports.razor"
-using Microsoft.AspNetCore.Components.Web;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
 #line 7 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\_Imports.razor"
 using Microsoft.JSInterop;
 
@@ -84,6 +77,13 @@ using Syncfusion.Blazor;
 #nullable disable
 #nullable restore
 #line 1 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\Index.razor"
+using Microsoft.AspNetCore.Components.Web;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\Index.razor"
 using Syncfusion.Blazor.Buttons;
 
 #line default
@@ -98,10 +98,11 @@ using Syncfusion.Blazor.Buttons;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 172 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\Index.razor"
+#line 173 "C:\Users\User\source\repos\Softdent2OpenDentalConversion\Softdent2OpenDentalConversion\Pages\Index.razor"
  
     private async Task AddExplosionCodes()
     {
+        // Open the Explosion Codes page.
         string url = "/ExpCodes";
         await jsRuntime.InvokeAsync<object>("open", url, "_blank");
     }

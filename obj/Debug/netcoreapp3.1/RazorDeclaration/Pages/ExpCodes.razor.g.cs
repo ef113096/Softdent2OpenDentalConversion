@@ -173,14 +173,17 @@ using Softdent2OpenDentalConversion.Models.Softdent;
         GridData = dbSoftdentContext.ExplosionCodes.OrderBy(e => e.ExplosionCode).ThenBy(e => e.ADACode).ToList();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        numericTextBoxEplosionCode.FocusIn();
+        await numericTextBoxEplosionCode.FocusIn();
 
         if (firstRender)
         {
+            // Set the page title.
+            await jsRuntime.InvokeVoidAsync("SetPageTitle", "Explosion Codes");
+
             // If the grid has records then highlight row 0.
-            if (Grid.TotalItemCount > 0) Grid.SelectRow(0);
+            if (Grid.TotalItemCount > 0) await Grid.SelectRow(0);
         }
     }
 

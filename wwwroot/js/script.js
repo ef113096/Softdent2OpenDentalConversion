@@ -7,3 +7,7 @@ function scroll(index) {
     var rowHeight = grid.getRows()[index].scrollHeight; grid.getContent().scrollTop = rowHeight * index;                //do the calculations to set the scrollTop value for grid content 
 }
 
+function SetPageTitle(title) {
+    document.title = title;
+}
+
